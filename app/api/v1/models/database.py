@@ -5,7 +5,6 @@ from flask import jsonify
 
 DB_URL = os.getenv('DATABASE')
 
-
 def init_db():
     '''Connecting to the DB'''
     conn = psycopg2.connect(DB_URL)
