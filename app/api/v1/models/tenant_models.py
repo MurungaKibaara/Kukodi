@@ -22,12 +22,10 @@ class TenantRecords():
         """ Add a new tenant """
 
         payload = {
-            "tenant_id": tenant_id,
             "firstname": firstname,
             "lastname": lastname,
             "email": email,
             "password": password,
-            "confirm_password": confirm_password
             "phonenumber": phonenumber
         }
 

@@ -67,15 +67,14 @@ def tenant_registration():
 
         # Check whether a user exists
         cur = INIT_DB.cursor()
-        cur.execute(
-            """  SELECT email FROM users WHERE email = '%s' """ % (email))
+        cur.execute("""SELECT email FROM tenants WHERE email = '%s' """ % (email))
         data = cur.fetchone()
 
         if data is not None:
             return jsonify({"message": "tenant already exists"}), 400
 
         try:
-            TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber)
+            return TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber)
 
         except (psycopg2.Error) as error:
             return jsonify(error)
@@ -87,4 +86,4 @@ def tenant_registration():
 @LOGIN.route('/login', methods=['POST'])
 def login():
     '''Allow tenants to log in'''
-    return TENANT_RECORDS.login_tenants()
+    return TENANT_RECORDS.login_tenant()
