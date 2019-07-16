@@ -17,8 +17,8 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
 
     @app.errorhandler(404)
-    def not_found(message):
-        """ not found handler"""
+    def resource_not_found(message):
+        """resource not found handler"""
 
         return jsonify({
             "status": 404,
@@ -42,7 +42,7 @@ def create_app(config_name):
             "message": str(message)
         }), 500
 
-    app.register_error_handler(404, not_found)
+    app.register_error_handler(404, resource_not_found)
     app.register_error_handler(405, method_not_allowed)
     app.register_error_handler(500, internal_server_error)
 

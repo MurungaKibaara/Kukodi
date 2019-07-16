@@ -4,18 +4,20 @@ import psycopg2
 from flask import jsonify
 
 DB_URL = os.getenv('DATABASE')
+print(DB_URL)
 
 def init_db():
     '''Connecting to the DB'''
     conn = psycopg2.connect(DB_URL)
+    print("connection: ", conn)
     return conn
-
 
 def create_tables():
     '''Function for creating tables in database'''
     conn = init_db()
     cur = conn.cursor()
     queries = tables()
+    print("queries: ", queries)
 
     for query in queries:
         cur.execute(query)
