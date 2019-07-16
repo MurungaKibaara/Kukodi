@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from dotenv import load_dotenv
 from instance.config import APP_CONFIG, DevelopmentConfig
 from app.api.v1.models.database import init_db, create_tables
+from app.api.v1.views.tenant_views import REGISTRATION, LOGIN
 
 def create_app(config_name):
     '''create app'''
@@ -15,6 +16,8 @@ def create_app(config_name):
         create_tables()
 
     app.config.from_pyfile('config.py')
+    app.register_blueprint(REGISTRATION, url_prefix='/api/v1')
+    app.register_blueprint(LOGIN, url_prefix='/api/v1')
 
     @app.errorhandler(404)
     def resource_not_found(message):
