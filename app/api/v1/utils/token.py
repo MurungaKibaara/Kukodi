@@ -1,13 +1,13 @@
 '''Validators and decorators'''
 from functools import wraps
 from flask import request, jsonify
-from app.api.V2.models.user_models import verify_token
+from app.api.v1.models.tenant_models import token_verification
 
 def login_required(auth_function):
-    '''Creates login requred decorator'''
+    '''creates login required decorator'''
     @wraps(auth_function)
     def decorated_function(*args, **kwargs):
-        '''Create decorated function'''
+        '''create decorated function'''
 
         auth_token = None
         auth_header = request.headers.get('Authorization')
@@ -18,11 +18,11 @@ def login_required(auth_function):
         if not auth_token:
             return jsonify({"message": "token required"}), 401
         try:
-            response = verify_token(auth_token)
+            response = token_verification(auth_token)
 
             if isinstance(response, str):
-                user = response
-                if not user:
+                tenant = response
+                if not tenant:
                     return jsonify({"message": "wrong email"}), 400
         except:
             return jsonify({"message": "token is invalid"}), 400
