@@ -6,6 +6,7 @@ from instance.config import APP_CONFIG, DevelopmentConfig
 from app.api.v1.models.database import init_db, create_tables
 from app.api.v1.views.tenant_views import TENANT
 from app.api.v1.views.landlord_views import LANDLORD
+from app.api.v1.views.property_views import PROPERTY
 
 def create_app(config_name):
     '''create app'''
@@ -19,6 +20,7 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
     app.register_blueprint(TENANT, url_prefix='/api/v1')
     app.register_blueprint(LANDLORD, url_prefix='/api/v1')
+    app.register_blueprint(PROPERTY, url_prefix='/api/v1')
 
     @app.errorhandler(404)
     def resource_not_found(message):
