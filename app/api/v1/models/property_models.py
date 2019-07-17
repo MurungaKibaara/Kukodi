@@ -29,7 +29,7 @@ class PropertyRecords():
 
         return jsonify({"message": ("property %s successfully registered")%(property_name)}), 201
 
-    def view_properties(self, property_id):
+    def view_properties(self):
         '''View all properties'''
         try:
             cur = self.database.cursor(cursor_factory=DictCursor)
@@ -51,7 +51,7 @@ class PropertyRecords():
             cur.execute("""  SELECT * FROM properties WHERE property_id = '%s' """ % (property_id))
             data = cur.fetchone()
 
-            if data is None:
+            if len(data) is None:
                 return jsonify({"message":"property does not exist"})
 
             return jsonify({"property ": data})
@@ -66,7 +66,7 @@ class PropertyRecords():
             cur.execute("""  SELECT * FROM properties WHERE property_name = '%s' """ % (property_name))
             data = cur.fetchone()
 
-            if data is None:
+            if len(data) == 0:
                 return jsonify({"message":"property does not exist"})
 
             return jsonify({"property ": data})
