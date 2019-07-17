@@ -2,19 +2,19 @@ import re
 import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, request, jsonify, make_response
-from app.api.v1.models.tenant_models import TenantRecords
+from app.api.v1.models.landlord_models import LandlordRecords
 from app.api.v1.models.database import init_db
 from app.api.v1.utils.validators import validate
 
 INIT_DB = init_db()
 
-TENANT = Blueprint('tenant', __name__)
+LANDLORD = Blueprint('landlord', __name__)
 
-TENANT_RECORDS = TenantRecords()
+LANDLORD_RECORDS = LandlordRecords()
 
-@TENANT.route('/tenant/registration', methods=['POST'])
-def tenant_registration():
-    '''tenant registration endpoint'''
+@LANDLORD.route('/landlord/registration', methods=['POST'])
+def landlord_registration():
+    '''landlord registration endpoint'''
     try:
         data = request.get_json()
 
@@ -29,14 +29,14 @@ def tenant_registration():
         validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd)
 
         cur = INIT_DB.cursor()
-        cur.execute("""SELECT email FROM tenants WHERE email = '%s' """ % (email))
+        cur.execute("""SELECT email FROM landlord WHERE email = '%s' """ % (email))
         data = cur.fetchone()
 
         if data is not None:
-            return jsonify({"message": "tenant already exists"}), 400
+            return jsonify({"message": "account already exists"}), 400
 
         try:
-            return (TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber))
+            return (LANDLORD_RECORDS.register_landlord(firstname, lastname, email, password, phonenumber))
 
         except (psycopg2.Error) as error:
             return jsonify(error)
@@ -45,7 +45,7 @@ def tenant_registration():
         return jsonify({"error": "a key is missing"}), 400
 
 
-@TENANT.route('/tenant/login', methods=['POST'])
+@LANDLORD.route('/landlord/login', methods=['POST'])
 def login():
-    '''Allow tenants to log in'''
-    return TENANT_RECORDS.login_tenant()
+    '''Allow landlords to log in'''
+    return LANDLORD_RECORDS.login_landlord()
