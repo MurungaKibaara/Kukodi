@@ -74,7 +74,7 @@ def tenant_registration():
             return jsonify({"message": "tenant already exists"}), 400
 
         try:
-            return TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber)
+            return (TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber))
 
         except (psycopg2.Error) as error:
             return jsonify(error)

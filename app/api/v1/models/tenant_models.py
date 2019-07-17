@@ -36,6 +36,8 @@ class TenantRecords():
         cur.execute(query, payload)
         self.database.commit()
 
+        return jsonify({"message": ("tenant %s successfully created")%(firstname)}), 201
+
     def login_tenant(self):
         '''sign in a tenant'''
         try:
