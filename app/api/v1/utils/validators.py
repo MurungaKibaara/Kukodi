@@ -1,6 +1,8 @@
 '''Validate user entry'''
+import re
+from werkzeug.security import generate_password_hash, check_password_hash
 
-def validate(firstname, lastname, email, phonenumber, password, confirm_password):
+def validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd):
     '''Validate tenant registration data'''
 
     if not firstname.strip():
