@@ -43,19 +43,20 @@ class TenantRecords():
             user_password = request.get_json()["password"]
 
             cur = INIT_DB.cursor(cursor_factory=DictCursor)
-            cur.execute(
-                """  SELECT password FROM tenants WHERE email = '%s' """ % (user_email))
+            cur.execute("""  SELECT password, tenant_id, firstname FROM tenants WHERE email = '%s' """ % (user_email))
             data = cur.fetchone()
 
             if data is None:
-                return jsonify({"message":"no data here"})
+                return jsonify({"message":"tenant does not exist"})
 
             password = data["password"]
+            tenant_id = data["tenant_id"]
+            tenant = data["firstname"]
 
             if password is not None:
                 if check_password_hash(password, user_password):
                     payload = {
-                        'sub':user_email,
+                        'sub':tenant_id,
                         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
                         }
                     token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
@@ -63,7 +64,7 @@ class TenantRecords():
                     auth_token = token.decode('UTF-8')
 
                     return jsonify({
-                        "logged in as":user_email,
+                        "logged in as":tenant,
                         "token":auth_token}), 200
 
                 return jsonify({"message": "invalid credentials, try again"}), 401

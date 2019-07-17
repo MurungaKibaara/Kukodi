@@ -12,7 +12,7 @@ LOGIN = Blueprint('tenant_login', __name__)
 
 TENANT_RECORDS = TenantRecords()
 
-@REGISTRATION.route('/registration', methods=['POST'])
+@REGISTRATION.route('/tenant/registration', methods=['POST'])
 def tenant_registration():
     '''tenant registration endpoint'''
     try:
@@ -83,7 +83,7 @@ def tenant_registration():
         return jsonify({"error": "a key is missing"}), 400
 
 
-@LOGIN.route('/login', methods=['POST'])
+@LOGIN.route('/tenant/login', methods=['POST'])
 def login():
     '''Allow tenants to log in'''
     return TENANT_RECORDS.login_tenant()
