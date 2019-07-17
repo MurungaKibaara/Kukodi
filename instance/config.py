@@ -5,7 +5,7 @@ class Config(object):
     """Main Configurations"""
     DEBUG = False
     TESTING = False
-    SECRET_KEY = os.urandom(24)
+    SECRET_KEY = 'xac,oj\xd4$\xee\x13\xdezZI\xf2\x9b\xd6`\x1e_"\xb1\x1ey\xc1I'
 
 
 class DevelopmentConfig(Config):

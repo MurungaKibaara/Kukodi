@@ -29,7 +29,7 @@ def tables():
             phonenumber character varying(1000) NOT NULL,
             email character varying(1000) NOT NULL,
             password character varying(1000) NOT NULL,
-            house_id integer,
+            house_id integer default null,
             FOREIGN KEY(house_id) REFERENCES houses(house_id));
             """
 
@@ -44,7 +44,7 @@ def tables():
     properties = """CREATE TABLE IF NOT EXISTS property (
             property_id serial PRIMARY KEY NOT NULL UNIQUE,
             property_name character varying(255) NOT NULL,
-            landlord_id integer not null,
+            landlord_id integer default null,
             FOREIGN KEY(landlord_id) REFERENCES landlord(landlord_id));"""
 
     houses = """CREATE TABLE IF NOT EXISTS houses (
@@ -52,21 +52,21 @@ def tables():
             house_no integer NOT NULL,
             house_type character varying(50) NOT NULL,
             rent_amount integer NOT NULL,
-            property_id integer not null,
-            FOREIGN KEY(property_id) REFERENCES properties(property_id));"""
+            property_id integer default null,
+            FOREIGN KEY(property_id) REFERENCES property(property_id));"""
 
     payments = """CREATE TABLE IF NOT EXISTS payments (
             payment_id serial PRIMARY KEY NOT NULL UNIQUE,
             amount_paid integer NOT NULL,
             date_paid character varying(50) NOT NULL,
             transaction_id character varying(255) NOT NULL,
-            billing_id integer not null,
+            billing_id integer default null,
             FOREIGN KEY(billing_id) REFERENCES billing(billing_id));"""
 
     billing = """CREATE TABLE IF NOT EXISTS billing (
             billing_id serial PRIMARY KEY NOT NULL UNIQUE,
             amount_payable integer NOT NULL,
-            house_id integer not null,
+            house_id integer default null,
             FOREIGN KEY(house_id) REFERENCES houses(house_id));"""
 
     complaints = """CREATE TABLE IF NOT EXISTS complaints (
@@ -74,7 +74,7 @@ def tables():
             title character varying(255) NOT NULL,
             description character varying(255) NOT NULL,
             date character varying(255) NOT NULL,
-            tenant_id integer not null,
+            tenant_id integer default null,
             FOREIGN KEY(tenant_id) REFERENCES tenants(tenant_id) );"""
 
     queries = [landlord, properties, houses, tenants, billing, payments, complaints]
