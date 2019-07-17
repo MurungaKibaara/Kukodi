@@ -30,9 +30,9 @@ class PropertyRecords():
         return jsonify({"message": ("property %s successfully registered")%(property_name)}), 201
 
     def view_properties(self, property_id):
-        '''sign in a tenant'''
+        '''View all properties'''
         try:
-            cur = INIT_DB.cursor(cursor_factory=DictCursor)
+            cur = self.database.cursor(cursor_factory=DictCursor)
             cur.execute("""  SELECT * FROM properties """)
             data = cur.fetchall()
 
@@ -45,9 +45,9 @@ class PropertyRecords():
             return jsonify(error)
 
     def view_property(self, property_id):
-        '''sign in a tenant'''
+        '''View a particular property'''
         try:
-            cur = INIT_DB.cursor(cursor_factory=DictCursor)
+            cur = self.database.cursor(cursor_factory=DictCursor)
             cur.execute("""  SELECT * FROM properties WHERE property_id = '%s' """ % (property_id))
             data = cur.fetchone()
 
@@ -58,3 +58,19 @@ class PropertyRecords():
 
         except (psycopg2.Error) as error:
             return jsonify(error)
+    
+    def view_property_by_name(self, property_name):
+        '''View a particular property by name(To allow for search)'''
+        try:
+            cur = self.database.cursor(cursor_factory=DictCursor)
+            cur.execute("""  SELECT * FROM properties WHERE property_name = '%s' """ % (property_name))
+            data = cur.fetchone()
+
+            if data is None:
+                return jsonify({"message":"property does not exist"})
+
+            return jsonify({"property ": data})
+
+        except (psycopg2.Error) as error:
+            return jsonify(error)
+
