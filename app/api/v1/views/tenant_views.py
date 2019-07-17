@@ -29,7 +29,6 @@ def tenant_registration():
 
         validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd)
 
-        # Check whether a user exists
         cur = INIT_DB.cursor()
         cur.execute("""SELECT email FROM tenants WHERE email = '%s' """ % (email))
         data = cur.fetchone()
