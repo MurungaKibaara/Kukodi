@@ -12,14 +12,14 @@ JWT_SECRET = Config.SECRET_KEY
 INIT_DB = init_db()
 
 class LandlordRecords():
-    """ Create a model that stores users data"""
+    """ A model that stores users data"""
 
     def __init__(self):
         """initialize the database and argument variables"""
         self.database = INIT_DB
 
     def register_landlord(self, firstname, lastname, email, password, phonenumber):
-        """ Add a new tenant """
+        """ Add a new landlord """
 
         payload = {
             "firstname": firstname,
@@ -39,7 +39,7 @@ class LandlordRecords():
         return jsonify({"message": ("Landlord %s successfully created")%(firstname)}), 201
 
     def login_landlord(self):
-        '''sign in a tenant'''
+        '''sign in a landlord'''
         try:
             user_email = request.get_json()["email"]
             user_password = request.get_json()["password"]
