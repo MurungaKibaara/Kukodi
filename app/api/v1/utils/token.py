@@ -2,7 +2,6 @@
 from functools import wraps
 from flask import request, jsonify
 from app.api.v1.models.tenant_models import token_verification
-from 
 
 def login_required(auth_function):
     '''creates login required decorator'''

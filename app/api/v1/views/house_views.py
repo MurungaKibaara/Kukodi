@@ -1,7 +1,6 @@
 import re
 import psycopg2
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify
 from app.api.v1.models.house_models import HouseRecords
 from app.api.v1.models.database import init_db
 from app.api.v1.utils.validators import validate_house_data
@@ -13,7 +12,7 @@ HOUSE = Blueprint('house', __name__)
 
 HOUSE_RECORDS = HouseRecords()
 
-@HOUSE.route('/house/registration', methods=['POST'])
+@HOUSE.route('/houses', methods=['POST'])
 @login_required
 def house_registration():
     '''house registration'''
@@ -44,17 +43,17 @@ def house_registration():
         return jsonify({"error": "a key is missing"}), 400
 
 
-@PROPERTY.route('/houses', methods=['GET'])
+@HOUSE.route('/houses', methods=['GET'])
 def view_all():
     '''view all houses'''
     return HOUSE_RECORDS.view_houses()
 
-@PROPERTY.route('/houses/<int:house_id>', methods=['GET'])
+@HOUSE.route('/houses/<int:house_id>', methods=['GET'])
 def view_one(house_id):
     '''view house by house id'''
     return HOUSE_RECORDS.view_house(house_id)
 
-@PROPERTY.route('/houses/<string:house_number>', methods=['GET'])
-def view_one_by_name(house_number):
+@HOUSE.route('/houses/<string:house_no>', methods=['GET'])
+def view_one_by_number(house_no):
     '''view house by house number'''
-    return HOUSE_RECORDS.view_house_by_number(house_number)
+    return HOUSE_RECORDS.view_house_by_number(house_no)

@@ -1,4 +1,4 @@
-'''Properties model: Class to manage house data'''
+'''model to manage house data'''
 import datetime
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -29,14 +29,20 @@ class HouseRecords():
 
         property_id_query = ("SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s'")
 
+        cur = self.database.cursor(cursor_factory=RealDictCursor)
+        cur.execute(query, property_id_query)
+        data = cur.fetchone()
+
+        property_id = data['property_id']
+
         payload = {
             "property_id": property_id,
-            "house_number": house_number,
+            "house_number": house_no,
             "house_type": house_type,
             "rent_amount": rent_amount
         }
 
-        query = """INSERT INTO houses (rent_amount, house_type, house_number, property_id) VALUES (%(rent_amount)s,%(house_type)s,%(house_number)s, %(property_id)s);"""
+        query = """INSERT INTO houses (rent_amount, house_type, house_no, property_id) VALUES (%(rent_amount)s,%(house_type)s,%(house_number)s, %(property_id)s);"""
 
         cur = self.database.cursor()
         cur.execute(query, payload)
@@ -67,18 +73,18 @@ class HouseRecords():
             data = cur.fetchone()
 
             if data == None:
-                return jsonify({"message":"property does not exist"})
+                return jsonify({"message":"house does not exist"})
 
             return jsonify({"houses ": data})
 
         except (psycopg2.Error) as error:
             return jsonify(error)
     
-    def view_house_by_number(self, house_number):
+    def view_house_by_number(self, house_no):
         '''View a particular house by house number'''
         try:
             cur = self.database.cursor(cursor_factory=RealDictCursor)
-            cur.execute("""  SELECT * FROM houses WHERE house_number = '%s' """ % (house_number))
+            cur.execute("""  SELECT * FROM houses WHERE house_no = '%s' """ %(house_no))
             data = cur.fetchone()
 
             if data == None:
@@ -87,4 +93,5 @@ class HouseRecords():
             return jsonify({"houses ": data})
 
         except (psycopg2.Error) as error:
+            print(error)
             return jsonify(error)

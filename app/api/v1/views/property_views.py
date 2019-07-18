@@ -13,7 +13,7 @@ PROPERTY = Blueprint('property', __name__)
 
 PROPERTY_RECORDS = PropertyRecords()
 
-@PROPERTY.route('/property/registration', methods=['POST'])
+@PROPERTY.route('/property', methods=['POST'])
 @login_required
 def property_registration():
     '''property registration'''
@@ -46,7 +46,7 @@ def property_registration():
         return jsonify({"error": "a key is missing"}), 400
 
 
-@PROPERTY.route('/property/all', methods=['GET'])
+@PROPERTY.route('/property', methods=['GET'])
 def view_all():
     '''view all properties'''
     return PROPERTY_RECORDS.view_properties()

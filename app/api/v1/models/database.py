@@ -49,7 +49,7 @@ def tables():
 
     houses = """CREATE TABLE IF NOT EXISTS houses (
             house_id serial PRIMARY KEY NOT NULL UNIQUE,
-            house_no integer NOT NULL,
+            house_no character varying(50) NOT NULL UNIQUE,
             house_type character varying(50) NOT NULL,
             rent_amount integer NOT NULL,
             property_id integer default null,
@@ -58,13 +58,13 @@ def tables():
     payments = """CREATE TABLE IF NOT EXISTS payments (
             payment_id serial PRIMARY KEY NOT NULL UNIQUE,
             amount_paid integer NOT NULL,
-            date_paid character varying(50) NOT NULL,
+            date_paid DATE NOT NULL DEFAULT CURRENT_DATE,
             transaction_id character varying(255) NOT NULL,
             billing_id integer default null,
             FOREIGN KEY(billing_id) REFERENCES billing(billing_id));"""
 
     billing = """CREATE TABLE IF NOT EXISTS billing (
-            billing_id serial PRIMARY KEY NOT NULL UNIQUE,
+            billing_id character(50) PRIMARY KEY NOT NULL UNIQUE,
             amount_payable integer NOT NULL,
             house_id integer default null,
             FOREIGN KEY(house_id) REFERENCES houses(house_id));"""
@@ -73,7 +73,7 @@ def tables():
             complaint_id serial PRIMARY KEY NOT NULL UNIQUE,
             title character varying(255) NOT NULL,
             description character varying(255) NOT NULL,
-            date character varying(255) NOT NULL,
+            date DATE NOT NULL DEFAULT CURRENT_DATE,
             tenant_id integer default null,
             FOREIGN KEY(tenant_id) REFERENCES tenants(tenant_id) );"""
 
