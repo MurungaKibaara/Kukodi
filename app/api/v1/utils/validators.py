@@ -43,3 +43,23 @@ def validate(firstname, lastname, email, phonenumber, password, confirm_password
 
     if not check_password_hash(password, confirm_password):
         return jsonify({"error": "passwords did not match"}), 400
+
+def validate_house_data(house_number, house_type, rent_amount):
+    '''Validate house data'''
+
+    if not house_type.strip():
+            return jsonify({"error": "house_type cannot be empty"}), 400
+
+    if not re.match(r"^[A-Za-z][a-zA-Z]", house_type):
+        return jsonify({"error": "input valid house type"}), 400
+
+    if not house_number.strip():
+        return jsonify({"error": "house number cannot be empty"}), 400
+    
+    if not rent_amount.strip():
+        return jsonify({"error": "rent amount cannot be empty"}), 400
+
+    if not re.match(r"^[0-9]", rent_amount):
+        return jsonify({"error": "input valid amount"}), 400
+
+
