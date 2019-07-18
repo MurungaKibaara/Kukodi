@@ -75,7 +75,6 @@ class TenantRecords():
         except (psycopg2.Error) as error:
             return jsonify(error)
 
-
 def token_verification(auth_token):
     '''authentication token verification'''
     try:

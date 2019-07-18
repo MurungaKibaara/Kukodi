@@ -1,7 +1,8 @@
 import re
 import psycopg2
+import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, url_for, redirect
 from app.api.v1.models.tenant_models import TenantRecords
 from app.api.v1.models.database import init_db
 from app.api.v1.utils.validators import validate
@@ -49,3 +50,8 @@ def tenant_registration():
 def login():
     '''Allow tenants to log in'''
     return TENANT_RECORDS.login_tenant()
+
+@TENANT.route('/tenant/logout', methods=['POST'])
+def logout():
+    '''logout a user'''
+    return jsonify("Goodbye!")

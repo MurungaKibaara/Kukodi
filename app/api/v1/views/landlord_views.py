@@ -49,3 +49,8 @@ def landlord_registration():
 def login():
     '''Allow landlords to log in'''
     return LANDLORD_RECORDS.login_landlord()
+
+@LANDLORD.route('/landlord/logout', methods=['POST'])
+def logout():
+    '''logout a user'''
+    return jsonify("Goodbye!")
