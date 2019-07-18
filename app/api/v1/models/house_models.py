@@ -57,10 +57,10 @@ class HouseRecords():
             cur.execute("""  SELECT * FROM houses """)
             data = cur.fetchall()
 
-            if data == None:
-                return jsonify({"message":"no houses found"})
+            if len(data) == 0:
+                return jsonify({"message":"no houses found"}), 400
 
-            return jsonify({"houses": data})
+            return jsonify({"houses": data}), 200
 
         except (psycopg2.Error) as error:
             return jsonify(error)
@@ -73,9 +73,9 @@ class HouseRecords():
             data = cur.fetchone()
 
             if data == None:
-                return jsonify({"message":"house does not exist"})
+                return jsonify({"message":"house does not exist"}), 400
 
-            return jsonify({"houses ": data})
+            return jsonify({"houses ": data}), 200
 
         except (psycopg2.Error) as error:
             return jsonify(error)
@@ -88,9 +88,9 @@ class HouseRecords():
             data = cur.fetchone()
 
             if data == None:
-                return jsonify({"message":"house does not exist"})
+                return jsonify({"message":"house does not exist"}), 400
 
-            return jsonify({"houses ": data})
+            return jsonify({"houses ": data}), 200
 
         except (psycopg2.Error) as error:
             print(error)

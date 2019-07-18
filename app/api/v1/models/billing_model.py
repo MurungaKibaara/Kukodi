@@ -73,7 +73,7 @@ class BillingRecords():
             cur.execute("""  SELECT * FROM billing """)
             data = cur.fetchall()
 
-            if data == None:
+            if len(data) == 0:
                 return jsonify({"message":"no bills found"})
 
             return jsonify({"bills": data})
@@ -88,7 +88,7 @@ class BillingRecords():
             cur.execute("""  SELECT * FROM billing WHERE billing_id = '%s' """ % (billing_id))
             data = cur.fetchone()
 
-            if data != None:
+            if data == None:
                 return jsonify({"message":"bill not yet created"})
 
             return jsonify({"bills ": data})

@@ -48,7 +48,7 @@ def validate_house_data(house_number, house_type, rent_amount):
     '''Validate house data'''
 
     if not house_type.strip():
-            return jsonify({"error": "house_type cannot be empty"}), 400
+        return jsonify({"error": "house_type cannot be empty"}), 400
 
     if not re.match(r"^[A-Za-z][a-zA-Z]", house_type):
         return jsonify({"error": "input valid house type"}), 400
@@ -61,5 +61,16 @@ def validate_house_data(house_number, house_type, rent_amount):
 
     if not re.match(r"^[0-9]", rent_amount):
         return jsonify({"error": "input valid amount"}), 400
+
+def complaints_verification(title, description):
+    '''Validate complaints data'''
+
+    if not title.strip():
+        return jsonify({"error": "title cannot be empty"}), 400
+
+    if not description.strip():
+        return jsonify({"error": "description cannot be empty"}), 400
+
+
 
 
