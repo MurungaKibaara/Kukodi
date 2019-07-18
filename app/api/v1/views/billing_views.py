@@ -3,7 +3,6 @@ import psycopg2
 from flask import Blueprint, request, jsonify
 from app.api.v1.models.billing_model import BillingRecords
 from app.api.v1.models.database import init_db
-from app.api.v1.utils.validators import validate_house_data
 from app.api.v1.utils.token import login_required
 
 INIT_DB = init_db()
