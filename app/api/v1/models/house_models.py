@@ -27,7 +27,7 @@ class HouseRecords():
         decoded_token = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
         landlord_id = decoded_token['sub']
 
-        property_id_query = ('SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s')
+        property_id_query = ("SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s'")
 
         payload = {
             "property_id": property_id,
@@ -75,7 +75,7 @@ class HouseRecords():
             return jsonify(error)
     
     def view_house_by_number(self, house_number):
-        '''View a particular property by name(To allow for search)'''
+        '''View a particular house by house number'''
         try:
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute("""  SELECT * FROM houses WHERE house_number = '%s' """ % (house_number))
