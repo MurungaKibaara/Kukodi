@@ -14,15 +14,15 @@ PAYMENT_RECORDS = PaymentRecords()
 @PAYMENTS.route('/payments', methods=['POST'])
 @login_required
 def make_payment():
-    '''bill creation'''
+    ''' make payment  '''
     return PAYMENT_RECORDS.make_lnm_request()
 
 @PAYMENTS.route('/payments', methods=['GET'])
 def view_all():
-    '''view all bills'''
+    ''' view all payments '''
     return PAYMENT_RECORDS.view_payments()
 
 @PAYMENTS.route('/payments/<int:payment_id>', methods=['GET'])
 def view_one(payment_id):
-    '''view bills by billing id'''
+    ''' view payment by payment id '''
     return PAYMENT_RECORDS.view_payment(payment_id)
