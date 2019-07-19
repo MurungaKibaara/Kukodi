@@ -89,7 +89,7 @@ houses on the properties and tenants, and tenants can recieve monthly bills, mak
     | GET/api/v1/payments/&lt;id&gt                    |        View a payment record by id     |
     | POST/api/v1/bills                                |            Create bills                |
     | GET/api/v1/bills                                 |       View all existing bills          |
-    | GET/api/v1/bills/&lt;id&gt                       |         View a housee by id            |
+    | GET/api/v1/bills/&lt;id&gt                       |         View a house by id             |
     | POST/api/v1/complaints                           |      Tenants can post complaints       |
     | GET/api/v1/complaints                            |  Property owner can view all complaints|
     | GET/api/v1/complains/&lt;id&gt                   | property owner can view one coomplaint |
