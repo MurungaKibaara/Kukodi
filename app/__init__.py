@@ -10,6 +10,7 @@ from app.api.v1.views.property_views import PROPERTY
 from app.api.v1.views.house_views import HOUSE
 from app.api.v1.views.billing_views import BILLING
 from app.api.v1.views.complaint_views import COMPLAINTS
+from app.api.v1.views.payment_views import PAYMENTS
 
 def create_app(config_name):
     '''create app'''
@@ -27,6 +28,7 @@ def create_app(config_name):
     app.register_blueprint(HOUSE, url_prefix='/api/v1')
     app.register_blueprint(BILLING, url_prefix='/api/v1')
     app.register_blueprint(COMPLAINTS, url_prefix='/api/v1')
+    app.register_blueprint(PAYMENTS, url_prefix='/api/v1')
 
     @app.errorhandler(404)
     def resource_not_found(message):
