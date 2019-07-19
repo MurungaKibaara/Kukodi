@@ -18,11 +18,13 @@ def make_payment():
     return PAYMENT_RECORDS.make_lnm_request()
 
 @PAYMENTS.route('/payments', methods=['GET'])
+@login_required
 def view_all():
     ''' view all payments '''
     return PAYMENT_RECORDS.view_payments()
 
 @PAYMENTS.route('/payments/<int:payment_id>', methods=['GET'])
+@login_required
 def view_one(payment_id):
     ''' view payment by payment id '''
     return PAYMENT_RECORDS.view_payment(payment_id)
