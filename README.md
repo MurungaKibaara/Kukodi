@@ -21,7 +21,7 @@ houses on the properties and tenants, and tenants can recieve monthly bills & ma
 
 1. Clone the repo
 
-    > `https://github.com/MurungaKibaara/Kukodi/`
+    > `https://github.com/MurungaKibaara/Kukodi.git`
 
 2) Checkout develop branch
 
