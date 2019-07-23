@@ -1,7 +1,7 @@
 # Kukodi
 
 Kukodi is an app that allows a property owner to manage his/her rental properties with ease> A propert owner can register their properties,
-houses on the properties and tenants, and tenants can recieve monthly bills, make payments through the app.
+houses on the properties and tenants, and tenants can recieve monthly bills & make payments through the app.
 
 ## Kukodi API Version 1
 
@@ -23,7 +23,7 @@ houses on the properties and tenants, and tenants can recieve monthly bills, mak
 
     > `https://github.com/MurungaKibaara/Kukodi/`
 
-2) Checkout delelop branch
+2) Checkout develop branch
 
     > `git checkout develop`
 
@@ -47,11 +47,11 @@ houses on the properties and tenants, and tenants can recieve monthly bills, mak
 
 5. create the virtual environment
 
-    > `virtualenv env`
+    > `virtualenv venv`
 
 6. Activate the vitualenv in the parent directory of your **"env"**
 
-    > `source env/bin/activate`
+    > `source venv/bin/activate`
 
 7. Install requirement
 
@@ -89,7 +89,7 @@ houses on the properties and tenants, and tenants can recieve monthly bills, mak
     | GET/api/v1/payments/&lt;id&gt                    |        View a payment record by id     |
     | POST/api/v1/bills                                |            Create bills                |
     | GET/api/v1/bills                                 |       View all existing bills          |
-    | GET/api/v1/bills/&lt;id&gt                       |         View a house by id             |
+    | GET/api/v1/bills/&lt;id&gt                       |         View a bills by id             |
     | POST/api/v1/complaints                           |      Tenants can post complaints       |
     | GET/api/v1/complaints                            |  Property owner can view all complaints|
     | GET/api/v1/complains/&lt;id&gt                   | property owner can view one coomplaint |
