@@ -98,7 +98,7 @@ class PaymentRecords():
 
     def make_lnm_request(self):
         '''Get api resource'''
-        Access_token = generate_access_token()
+        Access_token = self.generate_access_token()
 
         billing_id, amount_payable, phonenumber = self.payments_details()
 
