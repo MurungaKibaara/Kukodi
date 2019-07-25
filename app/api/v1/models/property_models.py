@@ -49,13 +49,13 @@ class PropertyRecords():
             cur.execute("""  SELECT * FROM property """)
             data = cur.fetchall()
 
-            if data == None:
+            if len(data) == 0:
                 return jsonify({"message":"no properties found"})
 
             return jsonify({"properties": data})
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
     def view_property(self, property_id):
         '''View a particular property'''
@@ -70,7 +70,7 @@ class PropertyRecords():
             return jsonify({"property ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
     
     def view_property_by_name(self, property_name):
         '''View a particular property by name(To allow for search)'''
@@ -85,4 +85,4 @@ class PropertyRecords():
             return jsonify({"property ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
