@@ -57,7 +57,7 @@ class ComplaintsRecords():
             return jsonify({"complaints": data}), 400
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify(str(error))
 
     def view_complaint(self, complaint_id):
         '''View a particular complaint'''
@@ -72,4 +72,4 @@ class ComplaintsRecords():
             return jsonify({"complaints ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify(str(error))

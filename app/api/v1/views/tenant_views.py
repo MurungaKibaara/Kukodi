@@ -40,7 +40,7 @@ def tenant_registration():
             return (TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber))
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400

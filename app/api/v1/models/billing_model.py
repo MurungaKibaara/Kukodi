@@ -79,7 +79,7 @@ class BillingRecords():
             return jsonify({"bills": data})
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
 
     def view_bill(self, billing_id):
         '''View a particular bill'''
@@ -94,4 +94,4 @@ class BillingRecords():
             return jsonify({"bills ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})

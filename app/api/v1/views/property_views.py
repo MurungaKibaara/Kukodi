@@ -40,7 +40,7 @@ def property_registration():
             return PROPERTY_RECORDS.register_property(property_name)
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400

@@ -55,7 +55,7 @@ class PropertyRecords():
             return jsonify({"properties": data})
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
 
     def view_property(self, property_id):
         '''View a particular property'''
@@ -70,7 +70,7 @@ class PropertyRecords():
             return jsonify({"property ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
     
     def view_property_by_name(self, property_name):
         '''View a particular property by name(To allow for search)'''
@@ -85,4 +85,4 @@ class PropertyRecords():
             return jsonify({"property ": data})
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":error})
+            return jsonify({"error":str(error)})
