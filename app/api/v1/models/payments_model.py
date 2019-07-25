@@ -4,7 +4,6 @@ import psycopg2
 import base64
 import requests
 from psycopg2.extras import RealDictCursor
-from mpesa.api.mpesa_express import MpesaExpress
 import jwt
 from datetime import datetime, timedelta
 from flask import jsonify
