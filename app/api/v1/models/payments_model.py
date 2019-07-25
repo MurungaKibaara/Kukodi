@@ -53,7 +53,7 @@ class PaymentRecords():
         house_id = data["house_id"]
 
         billing_details_query = (
-            "SELECT * FROM biilling WHERE house_id='%(house_id)s'")
+            "SELECT * FROM billing WHERE house_id='%(house_id)s'")
 
         cur = self.database.cursor(cursor_factory=RealDictCursor)
         cur.execute(query, billing_details_query)
@@ -169,7 +169,7 @@ class PaymentRecords():
         cur.execute(query, payload)
         self.database.commit()
 
-        return jsonify({"message": ("payment fo %s successfully created") % (billing_id)}), 201
+        return jsonify({"message": ("payment for bill: %s successfully posted") % (billing_id)}), 201
 
     def view_payments(self):
         '''View all payments'''
