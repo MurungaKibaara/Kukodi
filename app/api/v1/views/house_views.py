@@ -28,7 +28,6 @@ def house_registration():
         cur = INIT_DB.cursor()
         cur.execute("""SELECT house_number FROM houses WHERE house_number = '%s' """ %(house_number))
         data = cur.fetchone()
-        print(data)
 
         if data != None:
             return jsonify({"message": "house already exists"}), 400
@@ -37,7 +36,7 @@ def house_registration():
             return HOUSE_RECORDS.register_house(house_number,house_type,rent_amount)
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400

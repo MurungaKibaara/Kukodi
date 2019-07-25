@@ -35,7 +35,7 @@ def complaints():
             return COMPLAINTS_RECORDS.complaint(title, description)
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400

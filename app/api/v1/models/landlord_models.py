@@ -73,7 +73,7 @@ class LandlordRecords():
             return ({"message": "account doesn't exist"}), 404
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
 
 def token_verification(auth_token):

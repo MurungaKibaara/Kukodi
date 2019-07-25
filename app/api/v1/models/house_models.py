@@ -63,7 +63,7 @@ class HouseRecords():
             return jsonify({"houses": data}), 200
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
     def view_house(self, house_id):
         ''' View a particular house '''
@@ -78,7 +78,7 @@ class HouseRecords():
             return jsonify({"houses ": data}), 200
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
     
     def view_house_by_number(self, house_no):
         '''View a particular house by house number'''
@@ -93,5 +93,4 @@ class HouseRecords():
             return jsonify({"houses ": data}), 200
 
         except (psycopg2.Error) as error:
-            print(error)
-            return jsonify(error)
+            return jsonify({"error":error})

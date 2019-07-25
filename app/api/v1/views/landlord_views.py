@@ -39,7 +39,7 @@ def landlord_registration():
             return (LANDLORD_RECORDS.register_landlord(firstname, lastname, email, password, phonenumber))
 
         except (psycopg2.Error) as error:
-            return jsonify(error)
+            return jsonify({"error":error})
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400
