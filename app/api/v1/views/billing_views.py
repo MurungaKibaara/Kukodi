@@ -22,7 +22,7 @@ def view_all():
     '''view all bills'''
     return BILLING_RECORDS.view_bills()
 
-@BILLING.route('/bills/<int:billing_id>', methods=['GET'])
+@BILLING.route('/bills/<string:billing_id>', methods=['GET'])
 def view_one(billing_id):
     '''view bills by billing id'''
     return BILLING_RECORDS.view_bill(billing_id)
