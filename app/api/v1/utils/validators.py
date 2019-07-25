@@ -1,8 +1,9 @@
 '''Validate user entry'''
 import re
+from flask import jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 
-def validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd):
+def validate(firstname, lastname, email, phonenumber, password, pwd):
     '''Validate tenant registration data'''
 
     if not firstname.strip():
@@ -35,14 +36,8 @@ def validate(firstname, lastname, email, phonenumber, password, confirm_password
     if not re.match(r'[A-Za-z0-9@#$]{6,12}', pwd):
         return jsonify({"error": "Input a stronger password"}), 400
 
-    if not confirm_password.strip():
-        return jsonify({"error": "confirm password cannot be empty"}), 400
-
     if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
         return jsonify({"error": "input valid email"}), 400
-
-    if not check_password_hash(password, confirm_password):
-        return jsonify({"error": "passwords did not match"}), 400
 
 def validate_house_data(house_number, house_type, rent_amount):
     '''Validate house data'''

@@ -24,9 +24,8 @@ def landlord_registration():
         phonenumber = data["phonenumber"]
         pwd = data["password"]
         password = generate_password_hash(pwd)
-        confirm_password = data["confirm_password"]
 
-        validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd)
+        validate(firstname, lastname, email, phonenumber, password, pwd)
 
         cur = INIT_DB.cursor()
         cur.execute("""SELECT email FROM landlord WHERE email = '%s' """ % (email))
