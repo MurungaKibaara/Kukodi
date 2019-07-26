@@ -85,10 +85,10 @@ class TenantRecords():
                 return jsonify({"message": "invalid credentials, try again"}), 401
             return ({"message": "tenant doesn't exist"}), 404
         except KeyError as error:
-            return jsonify({"error":"a key is missing" + str(error)})
+            return jsonify({"error":"a key is missing"}), 400
 
         except (psycopg2.Error) as error:
-            return jsonify({"error":str(error)})
+            return jsonify({"error":str(error)}), 400
 
 def token_verification(auth_token):
     '''authentication token verification'''
