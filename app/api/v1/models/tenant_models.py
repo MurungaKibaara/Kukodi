@@ -85,7 +85,7 @@ class TenantRecords():
                 return jsonify({"message": "invalid credentials, try again"}), 401
             return ({"message": "tenant doesn't exist"}), 404
         except KeyError as error:
-            return jsonify({"error":"a key is missing" + error})
+            return jsonify({"error":"a key is missing" + str(error)})
 
         except (psycopg2.Error) as error:
             return jsonify({"error":str(error)})
