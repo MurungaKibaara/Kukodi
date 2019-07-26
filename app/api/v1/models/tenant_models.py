@@ -47,7 +47,7 @@ class TenantRecords():
             user_password = data["password"]
 
             if not user_email.strip():
-            return jsonify({"error": "firstname cannot be empty"}), 400
+                return jsonify({"error": "email cannot be empty"}), 400
 
             if not re.match(r"^[A-Za-z][a-zA-Z]", user_email):
                 return jsonify({"error": "input valid Email"}), 400
