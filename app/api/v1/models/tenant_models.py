@@ -41,8 +41,20 @@ class TenantRecords():
     def login_tenant(self):
         '''sign in a tenant'''
         try:
-            user_email = request.get_json()["email"]
-            user_password = request.get_json()["password"]
+            data = request.get_json()
+
+            user_email = data["email"]
+            user_password = data["password"]
+
+            if not user_email.strip():
+            return jsonify({"error": "firstname cannot be empty"}), 400
+
+            if not re.match(r"^[A-Za-z][a-zA-Z]", user_email):
+                return jsonify({"error": "input valid Email"}), 400
+
+            if not user_password.strip():
+                return jsonify({"error": "password cannot be empty"}), 400
+
 
             cur = INIT_DB.cursor(cursor_factory=DictCursor)
             cur.execute("""  SELECT password, tenant_id, firstname FROM tenants WHERE email = '%s' """ % (user_email))
