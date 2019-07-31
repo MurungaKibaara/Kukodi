@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify, url_for, redirect
 from app.api.v1.models.tenant_models import TenantRecords
 from app.api.v1.models.database import init_db
 from app.api.v1.utils.validators import validate
+from app.api.v1.utils.token import login_required
 
 INIT_DB = init_db()
 
@@ -51,16 +52,19 @@ def login():
     return TENANT_RECORDS.login_tenant()
 
 @TENANT.route('/tenant/logout', methods=['POST'])
+@login_required
 def logout():
     '''logout a user'''
     return jsonify({"message":"logged out, bye!"}), 200
 
 @TENANT.route('/tenant/emailupdate', methods=['POST'])
+@login_required
 def update_email():
     '''update user email'''
     return TENANT_RECORDS.update_email()
 
 @TENANT.route('/tenant/passwordupdate', methods=['POST'])
+@login_required
 def update_password():
     '''update user password'''
     return TENANT_RECORDS.update_password()
