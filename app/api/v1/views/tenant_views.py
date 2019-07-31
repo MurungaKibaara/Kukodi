@@ -45,6 +45,10 @@ def tenant_registration():
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400
 
+@TENANT.route('/tenant/login', methods=['POST'])
+def login():
+    '''Allow tenants to log in'''
+    return TENANT_RECORDS.login_tenant()
 
 @TENANT.route('/tenant/login', methods=['POST'])
 def login():
@@ -54,4 +58,14 @@ def login():
 @TENANT.route('/tenant/logout', methods=['POST'])
 def logout():
     '''logout a user'''
-    return jsonify("Goodbye!")
+    return jsonify({"message":"logged out, bye!"}), 200
+
+@TENANT.route('/tenant/emailupdate', methods=['POST'])
+def update_email():
+    '''update user email'''
+    return TENANT_RECORDS.update_email()
+
+@TENANT.route('/tenant/passwordupdate', methods=['POST'])
+def update_password():
+    '''update user password'''
+    return TENANT_RECORDS.update_password()
