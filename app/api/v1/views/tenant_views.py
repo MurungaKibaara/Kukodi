@@ -50,11 +50,6 @@ def login():
     '''Allow tenants to log in'''
     return TENANT_RECORDS.login_tenant()
 
-@TENANT.route('/tenant/login', methods=['POST'])
-def login():
-    '''Allow tenants to log in'''
-    return TENANT_RECORDS.login_tenant()
-
 @TENANT.route('/tenant/logout', methods=['POST'])
 def logout():
     '''logout a user'''
