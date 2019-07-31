@@ -118,7 +118,7 @@ class TenantRecords():
 
     def update_email(self):
         '''Update mail'''
-         data = request.get_json()
+        data = request.get_json()
 
         user_email = data["user_email"]
         new_email = data["new_email"]
