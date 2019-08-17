@@ -152,9 +152,12 @@ def token_verification(auth_token):
         payload = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
         return payload['sub']
 
-    except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
+    except jwt.exceptions.ExpiredSignatureError:
+        return jsonify('Signature expired. Please log in again.')
 
+    except jwt.ExpiredSignatureError:
+        return jsonify('Signature expired. Please log in again.')
+    
     except jwt.InvalidTokenError:
         return 'invalid token. Please log in again.'
 

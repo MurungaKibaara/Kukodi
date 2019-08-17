@@ -1,10 +1,11 @@
 '''Model to manage billing records'''
 import datetime
+import requests
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import jwt
 from datetime import datetime, timedelta
-from flask import jsonify
+from flask import jsonify, request
 from app.api.v1.models.database import init_db
 from app.api.v1.models.landlord_models import token_verification
 from instance.config import Config
@@ -27,20 +28,27 @@ class BillingRecords():
         
         decoded_token = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
         landlord_id = decoded_token['sub']
+        print(landlord_id)
 
-        property_id_query = ("SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s'")
+        property_id_query = (""" SELECT property_id FROM property WHERE landlord_id= %d """)%(landlord_id)
 
         cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, property_id_query)
+        cur.execute(property_id_query)
         data = cur.fetchone()
+        
+        if data is None:
+            return jsonify({"message":"no property found!"})
 
         property_id = data['property_id']
 
-        house_details_query = ("SELECT * FROM houses WHERE property_id='%(property_id)s'")
+        house_details_query = ("SELECT * FROM houses WHERE property_id= %d ")%(property_id)
 
         cur = self.database.cursor(cursor_factory=RealDictCursor)
         cur.execute(query, property_id_query)
         data = cur.fetchall()
+
+        if data is None:
+            return jsonify({"message":"no houses found"})
 
         house_no = data["house_no"]
         amount_payable = data["rent_amount"]

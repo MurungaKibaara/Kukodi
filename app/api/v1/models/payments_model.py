@@ -1,12 +1,14 @@
 '''Model to manage payment records'''
 import datetime
+import time
 import psycopg2
 import base64
+import json
 import requests
 from psycopg2.extras import RealDictCursor
 import jwt
-from datetime import datetime, timedelta
-from flask import jsonify
+from datetime import timedelta
+from flask import jsonify, request
 from app.api.v1.models.database import init_db
 from app.api.v1.models.landlord_models import token_verification
 from instance.config import Config
@@ -25,82 +27,108 @@ class PaymentRecords():
     def payments_details(self):
         """ Get payment details """
 
-        auth_header = request.headers.get('Authorization')
-        auth_token = auth_header.split()[1]
+        try:
 
-        decoded_token = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
-        landlord_id = decoded_token['sub']
+            auth_header = request.headers.get('Authorization')
+            auth_token = auth_header.split()[1]
 
-        property_id_query = (
-            "SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s'")
+            decoded_token = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
+            landlord_id = decoded_token['sub']
 
-        cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, property_id_query)
-        data = cur.fetchone()
+            property_id_query = (
+                "SELECT property_id FROM property WHERE landlord_id= %d ")%(landlord_id)
 
-        property_id = data['property_id']
+            cur = self.database.cursor(cursor_factory=RealDictCursor)
+            cur.execute(property_id_query)
+            data = cur.fetchone()
 
-        house_details_query = (
-            "SELECT * FROM houses WHERE property_id='%(property_id)s'")
+            if data is None:
+                return jsonify({"message":"no property found"})
 
-        cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, property_id_query)
-        data = cur.fetchall()
+            property_id = data['property_id']
 
-        house_no = data["house_no"]
-        amount_payable = data["rent_amount"]
-        house_id = data["house_id"]
+            house_details_query = (
+                "SELECT * FROM houses WHERE property_id= %d ")%(property_id)
 
-        billing_details_query = (
-            "SELECT * FROM billing WHERE house_id='%(house_id)s'")
+            cur = self.database.cursor(cursor_factory=RealDictCursor)
+            cur.execute(property_id_query)
+            data = cur.fetchall()
 
-        cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, billing_details_query)
-        data = cur.fetchall()
+            if data is None:
+                return jsonify({"message":"no houses found"})
 
-        billing_id = data["billing_id"]
+            house_no = data["house_no"]
+            amount_payable = data["rent_amount"]
+            house_id = data["house_id"]
 
-        phone_number_query = '''SELECT phonenumber FROM tenants WHERE house_id = %(house_id)s '''
+            billing_details_query = (
+                "SELECT * FROM billing WHERE house_id='%d'")%(house_id)
 
-        cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, phone_number_query)
-        data = cur.fetchall()
+            cur = self.database.cursor(cursor_factory=RealDictCursor)
+            cur.execute(billing_details_query)
+            data = cur.fetchall()
 
-        phonenumber = data["phonenumber"]
+            if data is None:
+                return jsonify({"message":"no bills found"})
 
-        return billing_id, amount_payable, phonenumber
+            billing_id = data["billing_id"]
+
+            phone_number_query = ('''SELECT phonenumber FROM tenants WHERE house_id = %d ''')%(house_id)
+
+            cur = self.database.cursor(cursor_factory=RealDictCursor)
+            cur.execute(phone_number_query)
+            data = cur.fetchall()
+
+            if data is None:
+                return jsonify({"message":"no phone number found"})
+
+            phonenumber = data["phonenumber"]
+
+            return billing_id, amount_payable, phonenumber, house_id
+    
+        except Exception as e:
+            return jsonify({"error": str(e)})
 
     def generate_access_token(self):
         '''Generate Access Token'''
 
-        token = base64.b64encode(bytes('R2IgWD782FqFGiBi2Fr5phkvaI2szqAo:OFyNN6V3Keonc9Oh', 'utf-8'))
-        token = token.decode('utf-8')
-        token = json.dumps(token).strip('"')
-        oauth = ("Basic " + token).strip('"')
+        try:
 
-        oauthurl = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+            token = base64.b64encode(bytes('R2IgWD782FqFGiBi2Fr5phkvaI2szqAo:OFyNN6V3Keonc9Oh', 'utf-8'))
+            token = token.decode('utf-8')
+            token = json.dumps(token).strip('"')
+            oauth = ("Basic " + token).strip('"')
 
-        oauthHeader = {
-            "Host": "sandbox.safaricom.co.ke",
-            "Authorization": str(oauth),
-            "Content-Type": "application/json"
-        }
+            oauthurl = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
 
-        oauthresp = requests.get(oauthurl, headers=oauthHeader)
+            oauthHeader = {
+                "Host": "sandbox.safaricom.co.ke",
+                "Authorization": str(oauth),
+                "Content-Type": "application/json"
+            }
 
-        oauth=oauthresp.json()
-        access = oauth['access_token']
+            oauthresp = requests.get(oauthurl, headers=oauthHeader)
+
+            oauth=oauthresp.json()
+            access = oauth['access_token']
 
 
-        Access_token = ("Bearer " + access).strip('"')
+            Access_token = ("Bearer " + access).strip('"')
 
-        return Access_token
+            return Access_token
+
+        except:
+            return jsonify({"message":"internet connection error"})
 
     def make_lnm_request(self):
         '''Get api resource'''
         Access_token = self.generate_access_token()
+        print(Access_token)
 
-        billing_id, amount_payable, phonenumber = self.payments_details()
+        try:
+            billing_id, amount_payable, phonenumber = self.payments_details()
+        except Exception:
+            print("error ")
 
         passkey = 'R2IgWD782FqFGiBi2Fr5phkvaI2szqAoOFyNN6V3Keonc9Oh'
         ts= time.time()
@@ -111,8 +139,8 @@ class PaymentRecords():
 
         passkey = base64.b64encode(bytes(lnmpasskey, 'utf-8'))
         passkey = passkey.decode()
-        key= json.dumps(passkey).strip('"').strip('=')
-        print(key)
+        # key= json.dumps(passkey).strip('"').strip('=')
+        print(passkey)
 
         url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
 
@@ -128,9 +156,9 @@ class PaymentRecords():
             "Timestamp": "20190719215647",
             "TransactionType": "CustomerPayBillOnline",
             "Amount": "1",
-            "PartyA": "254719562555",
+            "PartyA": "254727200618",
             "PartyB": "174379",
-            "PhoneNumber": "254719562555",
+            "PhoneNumber": "254727200618",
             "CallBackURL": "https://peternjeru.co.ke/safdaraja/api/callback.php",
             "AccountReference": "account",
             "TransactionDesc": "test" ,
@@ -148,8 +176,11 @@ class PaymentRecords():
 
     def payment_processing(self):
         '''Use MPESA api to process payments'''
+        try:
+            billing_id, amount_payable, phonenumber, house_id = self.payments_details()
+        except Exception as e:
+            print(e)
 
-        billing_id, amount_payable, phonenumber = self.payments_details()
         mpesaresponse = self.make_lnm_request()
 
         transaction_id = mpesaresponse['CheckoutRequestID']

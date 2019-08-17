@@ -15,9 +15,10 @@ PAYMENT_RECORDS = PaymentRecords()
 @login_required
 def make_payment():
     ''' make payment  '''
-    return PAYMENT_RECORDS.make_lnm_request()
+    return PAYMENT_RECORDS.payment_processing()
 
 @PAYMENTS.route('/payments', methods=['GET'])
+
 @login_required
 def view_all():
     ''' view all payments '''
