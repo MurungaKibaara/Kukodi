@@ -24,21 +24,36 @@ def tenant_registration():
         lastname = data["lastname"]
         email = data["email"]
         phonenumber = data["phonenumber"]
+        house_no = data["house_no"]
         pwd = data["password"]
         password = generate_password_hash(pwd)
-        confirm_password = data["confirm_password"]
 
-        validate(firstname, lastname, email, phonenumber, password, confirm_password, pwd)
+        validate(firstname, lastname, email, phonenumber, password, pwd)
 
         cur = INIT_DB.cursor()
         cur.execute("""SELECT email FROM tenants WHERE email = '%s' """ % (email))
         data = cur.fetchone()
+        print(data)
 
         if data is not None:
             return jsonify({"message": "tenant already exists"}), 400
+        
+        cur = INIT_DB.cursor()
+        cur.execute(""" SELECT house_no FROM houses WHERE house_no = '%s' """ % (house_no))
+        data = cur.fetchone()
+
+        if data is not None:
+            return jsonify({"message": "house number %s does not exist"%(house_no)}), 400
+        
+        cur = INIT_DB.cursor()
+        cur.execute(""" SELECT house_no FROM tenants WHERE house_no = '%s' """ % (house_no))
+        data = cur.fetchall()
+
+        if len(data) !=0:
+            return jsonify({"message": "house number %s already assigned to another tenant"%(house_no)}), 400
 
         try:
-            return (TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber))
+            return (TENANT_RECORDS.register_tenant(firstname, lastname, email, password, phonenumber, house_no))
 
         except (psycopg2.Error) as error:
             return jsonify({"error":str(error)})

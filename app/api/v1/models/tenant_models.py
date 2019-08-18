@@ -19,7 +19,7 @@ class TenantRecords():
         """initialize the database and argument variables"""
         self.database = INIT_DB
 
-    def register_tenant(self, firstname, lastname, email, password, phonenumber):
+    def register_tenant(self, firstname, lastname, email, password, phonenumber, house_no):
         """ Add a new tenant """
 
         payload = {
@@ -27,11 +27,12 @@ class TenantRecords():
             "lastname": lastname,
             "email": email,
             "password": password,
-            "phonenumber": phonenumber
+            "phonenumber": phonenumber,
+            "house_no":house_no
         }
 
         query = """INSERT INTO tenants (firstname, lastname, email,
-        password, phonenumber) VALUES (%(firstname)s, %(lastname)s, %(email)s,%(password)s, %(phonenumber)s);"""
+        password, phonenumber, house_no) VALUES (%(firstname)s, %(lastname)s, %(email)s,%(password)s, %(phonenumber)s, %(house_no)s);"""
 
         cur = self.database.cursor()
         cur.execute(query, payload)

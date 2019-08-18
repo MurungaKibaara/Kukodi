@@ -29,6 +29,7 @@ def tables():
             phonenumber character varying(1000) NOT NULL,
             email character varying(1000) NOT NULL,
             password character varying(1000) NOT NULL,
+            house_no character varying(50) NOT NULL UNIQUE,
             house_id integer default null,
             FOREIGN KEY(house_id) REFERENCES houses(house_id));
             """

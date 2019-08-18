@@ -1,7 +1,7 @@
 '''Create database model to store user data'''
 import datetime
 import psycopg2
-from psycopg2.extras import DictCursor
+from psycopg2.extras import RealDictCursor
 import jwt
 from werkzeug.security import check_password_hash
 from flask import jsonify, request
@@ -74,6 +74,19 @@ class LandlordRecords():
 
         except (psycopg2.Error) as error:
             return jsonify({"error":str(error)})
+    
+    def view_tenants(self):
+        '''Landlord can view all tenants'''
+        query = '''SELECT * FROM tenants '''
+
+        cur = self.database.cursor(cursor_factory=RealDictCursor)
+        cur.execute(query)
+        data = cur.fetchall()
+
+        if len(data)==0:
+            return jsonify({"message":"no tenants available"}), 400
+        
+        return jsonify({"tenants":data}), 200
 
 
 def token_verification(auth_token):

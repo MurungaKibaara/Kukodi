@@ -28,7 +28,6 @@ class PaymentRecords():
         """ Get payment details """
 
         try:
-
             auth_header = request.headers.get('Authorization')
             auth_token = auth_header.split()[1]
 
@@ -51,10 +50,11 @@ class PaymentRecords():
                 "SELECT * FROM houses WHERE property_id= %d ")%(property_id)
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
-            cur.execute(property_id_query)
-            data = cur.fetchall()
+            cur.execute(house_details_query)
+            data = cur.fetchone()
+            print(data)
 
-            if data is None:
+            if len(data) == 0:
                 return jsonify({"message":"no houses found"})
 
             house_no = data["house_no"]
@@ -66,7 +66,7 @@ class PaymentRecords():
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(billing_details_query)
-            data = cur.fetchall()
+            data = cur.fetchone()
 
             if data is None:
                 return jsonify({"message":"no bills found"})
@@ -77,17 +77,19 @@ class PaymentRecords():
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(phone_number_query)
-            data = cur.fetchall()
+            data = cur.fetchone()
 
             if data is None:
                 return jsonify({"message":"no phone number found"})
 
             phonenumber = data["phonenumber"]
+            print(billing_id, amount_payable, phonenumber, house_id)
 
             return billing_id, amount_payable, phonenumber, house_id
     
         except Exception as e:
-            return jsonify({"error": str(e)})
+            print(e)
+            return jsonify({"error here": str(e)})
 
     def generate_access_token(self):
         '''Generate Access Token'''
@@ -112,7 +114,6 @@ class PaymentRecords():
             oauth=oauthresp.json()
             access = oauth['access_token']
 
-
             Access_token = ("Bearer " + access).strip('"')
 
             return Access_token
@@ -127,8 +128,8 @@ class PaymentRecords():
 
         try:
             billing_id, amount_payable, phonenumber = self.payments_details()
-        except Exception:
-            print("error ")
+        except Exception as e:
+            print("error "+ str(e))
 
         passkey = 'R2IgWD782FqFGiBi2Fr5phkvaI2szqAoOFyNN6V3Keonc9Oh'
         ts= time.time()
@@ -139,7 +140,7 @@ class PaymentRecords():
 
         passkey = base64.b64encode(bytes(lnmpasskey, 'utf-8'))
         passkey = passkey.decode()
-        # key= json.dumps(passkey).strip('"').strip('=')
+        # key= json.dumps(passkey).strip('"').strip('=') "254727200618"
         print(passkey)
 
         url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
@@ -156,9 +157,9 @@ class PaymentRecords():
             "Timestamp": "20190719215647",
             "TransactionType": "CustomerPayBillOnline",
             "Amount": "1",
-            "PartyA": "254727200618",
+            "PartyA": "254719562555",
             "PartyB": "174379",
-            "PhoneNumber": "254727200618",
+            "PhoneNumber": "254719562555",
             "CallBackURL": "https://peternjeru.co.ke/safdaraja/api/callback.php",
             "AccountReference": "account",
             "TransactionDesc": "test" ,
