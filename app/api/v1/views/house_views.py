@@ -26,7 +26,7 @@ def house_registration():
         validate_house_data(house_number, house_type, rent_amount)
 
         cur = INIT_DB.cursor()
-        cur.execute("""SELECT house_number FROM houses WHERE house_number = '%s' """ %(house_number))
+        cur.execute("""SELECT house_no FROM houses WHERE house_no = '%s' """ %(house_number))
         data = cur.fetchone()
 
         if data != None:

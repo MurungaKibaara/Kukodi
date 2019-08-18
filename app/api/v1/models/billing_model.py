@@ -44,17 +44,19 @@ class BillingRecords():
         house_details_query = ("SELECT * FROM houses WHERE property_id= %d ")%(property_id)
 
         cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, property_id_query)
-        data = cur.fetchall()
+        cur.execute(house_details_query)
+        data = cur.fetchone()
+        print(data)
 
-        if data is None:
+        if len(data) == 0:
             return jsonify({"message":"no houses found"})
 
         house_no = data["house_no"]
         amount_payable = data["rent_amount"]
         house_id = data["house_id"]
+        print(house_id)
 
-        date = (datetime.now() + datetime.timedelta(days=30)).strftime("%M")
+        date = (datetime.now() + timedelta(days=30)).strftime("%M")
         billing_id = date + "/"+ house_no
 
         payload = {
@@ -65,7 +67,7 @@ class BillingRecords():
         }
 
 
-        query = """INSERT INTO billing (house_no, amount_payabe, house_id, billing_id) VALUES (%(house_no)s,%(amount_payable)s,%(house_id)s, %(billing_id)s);"""
+        query = """INSERT INTO billing (billing_id, amount_payable, house_id) VALUES (%(billing_id)s,%(amount_payable)s,%(house_id)s);"""
 
 
         cur = self.database.cursor()

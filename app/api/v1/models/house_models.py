@@ -27,17 +27,17 @@ class HouseRecords():
         decoded_token = jwt.decode(auth_token, JWT_SECRET, algorithms='HS256')
         landlord_id = decoded_token['sub']
 
-        property_id_query = ("SELECT property_id FROM property WHERE landlord_id='%(landlord_id)s'")
+        property_id_query = (" SELECT property_id FROM property WHERE landlord_id= %d ")%(landlord_id)
 
         cur = self.database.cursor(cursor_factory=RealDictCursor)
-        cur.execute(query, property_id_query)
+        cur.execute(property_id_query)
         data = cur.fetchone()
 
         property_id = data['property_id']
 
         payload = {
             "property_id": property_id,
-            "house_number": house_no,
+            "house_number": house_number,
             "house_type": house_type,
             "rent_amount": rent_amount
         }

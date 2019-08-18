@@ -44,6 +44,8 @@ def property_registration():
 
     except KeyError:
         return jsonify({"error": "a key is missing"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @PROPERTY.route('/property', methods=['GET'])
