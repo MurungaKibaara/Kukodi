@@ -51,7 +51,7 @@ class PaymentRecords():
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(house_details_query)
-            data = cur.fetchone()
+            data = cur.fetchall()
             print(data)
 
             if len(data) == 0:
@@ -89,13 +89,12 @@ class PaymentRecords():
     
         except Exception as e:
             print(e)
-            return jsonify({"error here": str(e)})
+            return jsonify({"error": str(e)})
 
     def generate_access_token(self):
         '''Generate Access Token'''
 
         try:
-
             token = base64.b64encode(bytes('R2IgWD782FqFGiBi2Fr5phkvaI2szqAo:OFyNN6V3Keonc9Oh', 'utf-8'))
             token = token.decode('utf-8')
             token = json.dumps(token).strip('"')
@@ -118,8 +117,8 @@ class PaymentRecords():
 
             return Access_token
 
-        except:
-            return jsonify({"message":"internet connection error"})
+        except Exception as e:
+            return jsonify({"error":str(e)}), 400
 
     def make_lnm_request(self):
         '''Get api resource'''
@@ -128,8 +127,12 @@ class PaymentRecords():
 
         try:
             billing_id, amount_payable, phonenumber = self.payments_details()
+
+            print(billing_id)
         except Exception as e:
-            print("error "+ str(e))
+            print("error right here"+ str(e))
+            return jsonify({"error":str(e)})
+        
 
         passkey = 'R2IgWD782FqFGiBi2Fr5phkvaI2szqAoOFyNN6V3Keonc9Oh'
         ts= time.time()
@@ -173,7 +176,7 @@ class PaymentRecords():
             else:
                 return(response)
         except Exception as e:
-            return(e)
+            return jsonify({"error":str(e)})
 
     def payment_processing(self):
         '''Use MPESA api to process payments'''
@@ -181,6 +184,7 @@ class PaymentRecords():
             billing_id, amount_payable, phonenumber, house_id = self.payments_details()
         except Exception as e:
             print(e)
+            return jsonify({"error":str(e)})
 
         mpesaresponse = self.make_lnm_request()
 
@@ -216,6 +220,8 @@ class PaymentRecords():
 
         except (psycopg2.Error) as error:
             return jsonify({"error":str(error)})
+        except Exception as e:
+            return jsonify({"error":str(e)})
 
     def view_payment(self, payment_id):
         '''View individual payment'''

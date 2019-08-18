@@ -1,7 +1,7 @@
 '''Create database model to store user data'''
 import datetime
 import psycopg2
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import DictCursor, RealDictCursor
 import jwt
 from werkzeug.security import check_password_hash
 from flask import jsonify, request
