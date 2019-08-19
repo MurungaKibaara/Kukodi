@@ -131,7 +131,8 @@ class PaymentRecords():
             print(billing_id)
         except Exception as e:
             print("error right here"+ str(e))
-            return jsonify({"error":str(e)})
+            # return jsonify({"error":str(e)})
+            pass
         
 
         passkey = 'R2IgWD782FqFGiBi2Fr5phkvaI2szqAoOFyNN6V3Keonc9Oh'
