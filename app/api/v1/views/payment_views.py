@@ -15,7 +15,7 @@ PAYMENT_RECORDS = PaymentRecords()
 @login_required
 def make_payment():
     ''' make payment  '''
-    return PAYMENT_RECORDS.payments_details()
+    return PAYMENT_RECORDS.payment_processing()
 
 @PAYMENTS.route('/payments', methods=['GET'])
 @login_required

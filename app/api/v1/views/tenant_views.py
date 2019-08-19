@@ -42,7 +42,7 @@ def tenant_registration():
         cur.execute(""" SELECT house_no FROM houses WHERE house_no = '%s' """ % (house_no))
         data = cur.fetchone()
 
-        if data is not None:
+        if len(data) !=0:
             return jsonify({"message": "house number %s does not exist"%(house_no)}), 400
         
         cur = INIT_DB.cursor()

@@ -54,7 +54,7 @@ def logout():
     '''logout a user'''
     return jsonify("Goodbye!")
 
-@LANDLORD.route('/landlord/tenants', methods=['POST'])
+@LANDLORD.route('/landlord/tenants', methods=['POST','GET'])
 def tenants():
     '''Allow landlords to log in'''
     return LANDLORD_RECORDS.view_tenants()
