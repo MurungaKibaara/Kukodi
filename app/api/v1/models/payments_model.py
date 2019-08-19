@@ -131,8 +131,7 @@ class PaymentRecords():
             print(billing_id)
         except Exception as e:
             print("error right here"+ str(e))
-            # return jsonify({"error":str(e)})
-            pass
+            return jsonify({"error":str(e)})
         
 
         passkey = 'R2IgWD782FqFGiBi2Fr5phkvaI2szqAoOFyNN6V3Keonc9Oh'
@@ -161,9 +160,9 @@ class PaymentRecords():
             "Timestamp": "20190719215647",
             "TransactionType": "CustomerPayBillOnline",
             "Amount": "1",
-            "PartyA": "254719562555",
+            "PartyA": "254727200618",
             "PartyB": "174379",
-            "PhoneNumber": "254719562555",
+            "PhoneNumber": "254727200618",
             "CallBackURL": "https://peternjeru.co.ke/safdaraja/api/callback.php",
             "AccountReference": "account",
             "TransactionDesc": "test" ,
