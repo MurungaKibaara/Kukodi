@@ -143,7 +143,7 @@ class PaymentRecords():
 
         passkey = base64.b64encode(bytes(lnmpasskey, 'utf-8'))
         passkey = passkey.decode()
-        # key= json.dumps(passkey).strip('"').strip('=') "254727200618"
+        # key= json.dumps(passkey).strip('"').strip('=')
         print(passkey)
 
         url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
@@ -160,9 +160,9 @@ class PaymentRecords():
             "Timestamp": "20190719215647",
             "TransactionType": "CustomerPayBillOnline",
             "Amount": "1",
-            "PartyA": "254727200618",
+            "PartyA": "254719562555",
             "PartyB": "174379",
-            "PhoneNumber": "254727200618",
+            "PhoneNumber": "254719562555",
             "CallBackURL": "https://peternjeru.co.ke/safdaraja/api/callback.php",
             "AccountReference": "account",
             "TransactionDesc": "test" ,
