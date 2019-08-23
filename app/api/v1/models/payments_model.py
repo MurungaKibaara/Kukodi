@@ -35,7 +35,7 @@ class PaymentRecords():
             landlord_id = decoded_token['sub']
 
             property_id_query = (
-                "SELECT property_id FROM property WHERE landlord_id= %d ")%(landlord_id)
+                " SELECT property_id FROM property WHERE landlord_id= %d ")%(landlord_id)
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(property_id_query)
@@ -47,7 +47,7 @@ class PaymentRecords():
             property_id = data['property_id']
 
             house_details_query = (
-                "SELECT * FROM houses WHERE property_id= %d ")%(property_id)
+                " SELECT * FROM houses WHERE property_id= %d ")%(property_id)
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(house_details_query)
@@ -62,7 +62,7 @@ class PaymentRecords():
             house_id = data["house_id"]
 
             billing_details_query = (
-                "SELECT * FROM billing WHERE house_id='%d'")%(house_id)
+                " SELECT * FROM billing WHERE house_id='%d' ")%(house_id)
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(billing_details_query)
@@ -73,7 +73,7 @@ class PaymentRecords():
 
             billing_id = data["billing_id"]
 
-            phone_number_query = ('''SELECT phonenumber FROM tenants WHERE house_id = %d ''')%(house_id)
+            phone_number_query = (''' SELECT phonenumber FROM tenants WHERE house_id = %d ''')%(house_id)
 
             cur = self.database.cursor(cursor_factory=RealDictCursor)
             cur.execute(phone_number_query)
@@ -198,7 +198,7 @@ class PaymentRecords():
         }
 
 
-        query = """INSERT INTO payments (transaction_id, date_paid, amount_paid, house_id, billing_id) VALUES (%(transaction_id)s,%(date_paid)s,%(amount_paid)s,%(house_id)s, %(billing_id)s);"""
+        query = """ INSERT INTO payments (transaction_id, date_paid, amount_paid, house_id, billing_id) VALUES (%(transaction_id)s,%(date_paid)s,%(amount_paid)s,%(house_id)s, %(billing_id)s);"""
 
         cur = self.database.cursor()
         cur.execute(query, payload)

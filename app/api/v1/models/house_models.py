@@ -94,3 +94,6 @@ class HouseRecords():
 
         except (psycopg2.Error) as error:
             return jsonify({"error":str(error)})
+
+        # except Exception as e:
+        #     return jsonify({"error":str(e)})
